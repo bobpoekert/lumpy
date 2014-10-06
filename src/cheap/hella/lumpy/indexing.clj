@@ -1,4 +1,4 @@
-(ns cheap.hella.clumpy.indexing)
+(ns cheap.hella.lumpy.indexing)
 
 (defprotocol spatial-index
   (nearest-neighbors [this k target])

@@ -1,4 +1,6 @@
-# cheap.hella.clumpy
+![LSP](http://images2.fanpop.com/image/photos/12100000/Lumpy-Space-lumpy-space-princess-12167403-620-245.jpg)
+
+# lumpy
 
 A library for doing things ~in space~! Clustering, nearest-neighbor, etc. 
 

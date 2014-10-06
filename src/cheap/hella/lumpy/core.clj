@@ -1,4 +1,4 @@
-(ns cheap.hella.clumpy.core)
+(ns cheap.hella.lumpy.core)
 
 (defn -main
   "I don't do a whole lot."
