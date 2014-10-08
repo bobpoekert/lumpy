@@ -22,21 +22,19 @@
           (kd-tree (inc depth) k (take idx sorted))
           (kd-tree (inc depth) k (drop (inc idx) sorted)))))))
 
+(defn tree-distance-fn
+  [distance-fn]
+  (fn [^KDTreeNode left ^KDTreeNode right]
+    (distance-fn (.location left) (.location right))))
+
+(def euclidean-distance
+  (tree-distance-fn m/distance))
+
 (defn get-zip
   [^KDTreeNode tree distance-fn target]
-  (cond
-    (and (nil? (.left-child tree)) (nil? (.right-child tree))) (list tree)
-    (nil? (.left-child tree)) (if (> (distance-fn target (.location tree))
-                                     (distance-fn target (.location (.right-child tree))))
-                                (cons tree (get-zip (.right-child tree) distance-fn target))
-                                (list tree))
-    (nil? (.right-child tree)) (if (> (distance-fn target (.location tree))
-                                      (distance-fn startet (.location (.left-child tree))))
-                                (cons tree (get-zip (.left-child tree) distance-fn target))
-                                (list tree))
-    :else (let [dl (distance-fn target (.location (.left-child tree)))
-                dr (distance-fn target (.location (.right-child tree)))]
-            (case (compare dl dr)
-              -1 (cons tree (get-zip (.left-child tree) distance-fn target))
-              0 (list tree)
-              1 (cons tree (get-zip (.right-child tree) distance-fn target))))))
+  (if (and (nil? (.left-child tree)) (nil? (.right-child tree)))
+    (list tree)
+    (let [subtree (c/min-pred (distance-fn target) tree (.left-child tree) (.right-child tree))]
+      (if (= subtree tree)
+        (list (.location tree))
+        (cons (.location tree) (get-zip subtree distance-fn target))))))

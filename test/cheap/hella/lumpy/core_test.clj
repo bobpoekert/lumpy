@@ -2,6 +2,14 @@
   (:use clojure.test
         cheap.hella.lumpy.core))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(defn random-sequence
+  [pool-size]
+  (repeatedly (partial rand pool-size)))
+
+(defn eval-comp-pred
+  [op pred args]
+  (eval (apply inner-comp-pred op pred args)))
+
+(deftest max-min-pred
+  (is (= (min-pred (identity) 1 2 3 4 5) (reduce min [1 2 3 4 5])))
+  (is (= (max-pred (identity) 1 2 3 4 5) (reduce max [1 2 3 4 5]))))
